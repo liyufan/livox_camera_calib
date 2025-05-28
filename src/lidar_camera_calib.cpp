@@ -1,5 +1,4 @@
 #include "include/lidar_camera_calib.hpp"
-#include "ceres/ceres.h"
 #include "include/common.h"
 #include <fstream>
 #include <iomanip>
@@ -308,8 +307,7 @@ int main(int argc, char **argv) {
       Eigen::Map<Eigen::Quaterniond> m_q = Eigen::Map<Eigen::Quaterniond>(ext);
       Eigen::Map<Eigen::Vector3d> m_t = Eigen::Map<Eigen::Vector3d>(ext + 4);
 
-      ceres::LocalParameterization *q_parameterization =
-          new ceres::EigenQuaternionParameterization();
+      ParameterizationPtr q_parameterization = new ParameterizationType();
       ceres::Problem problem;
 
       problem.AddParameterBlock(ext, 4, q_parameterization);

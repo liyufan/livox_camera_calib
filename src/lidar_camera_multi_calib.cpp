@@ -1,4 +1,3 @@
-#include "ceres/ceres.h"
 #include "include/common.h"
 #include "include/lidar_camera_calib.hpp"
 #include <fstream>
@@ -10,7 +9,9 @@ using namespace std;
 
 // Data path
 string image_path;
+string image_extension;
 string pcd_path;
+string pcd_extension;
 string result_path;
 int data_num;
 
@@ -196,7 +197,9 @@ int main(int argc, char **argv) {
   ros::Rate loop_rate(0.1);
 
   nh.param<string>("common/image_path", image_path, "");
+  nh.param<string>("common/image_extension", image_extension, ".bmp");
   nh.param<string>("common/pcd_path", pcd_path, "");
+  nh.param<string>("common/pcd_extension", pcd_extension, ".pcd");
   nh.param<string>("common/result_path", result_path, "");
   nh.param<int>("common/data_num", data_num, 1);
   nh.param<vector<double>>("camera/camera_matrix", camera_matrix,
@@ -208,8 +211,8 @@ int main(int argc, char **argv) {
   std::vector<Calibration> calibs;
   for (size_t i = 0; i < data_num; i++) {
     string image_file, pcd_file = "";
-    image_file = image_path + "/" + std::to_string(i) + ".bmp";
-    pcd_file = pcd_path + "/" + std::to_string(i) + ".pcd";
+    image_file = image_path + "/" + std::to_string(i) + image_extension;
+    pcd_file = pcd_path + "/" + std::to_string(i) + pcd_extension;
     Calibration single_calib(image_file, pcd_file, calib_config_file);
     single_calib.fx_ = camera_matrix[0];
     single_calib.cx_ = camera_matrix[2];
@@ -309,8 +312,7 @@ int main(int argc, char **argv) {
       Eigen::Map<Eigen::Quaterniond> m_q = Eigen::Map<Eigen::Quaterniond>(ext);
       Eigen::Map<Eigen::Vector3d> m_t = Eigen::Map<Eigen::Vector3d>(ext + 4);
 
-      ceres::LocalParameterization *q_parameterization =
-          new ceres::EigenQuaternionParameterization();
+      ParameterizationPtr q_parameterization = new ParameterizationType();
       ceres::Problem problem;
 
       problem.AddParameterBlock(ext, 4, q_parameterization);

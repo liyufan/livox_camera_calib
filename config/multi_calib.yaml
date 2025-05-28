@@ -1,7 +1,9 @@
 # Data path. adjust them!
 common:
     image_path:  "/home/ycj/data/calib/image/old"
+    image_extension:  ".bmp"
     pcd_path:  "/home/ycj/data/calib/pcd/old"
+    pcd_extension:  ".pcd"
     result_path:  "/home/ycj/data/calib/extrinsic.txt"
     data_num: 3
 # Camera Parameters. Adjust them!
