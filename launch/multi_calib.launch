@@ -1,5 +1,5 @@
 <launch>
-  <rosparam command="load" file="$(find livox_camera_calib)/config/multi_calib.yaml" />
+  <rosparam command="load" file="$(find livox_camera_calib)/config/multi_calib.yaml" subst_value="true" />
   <node 
     pkg="livox_camera_calib"
     type="lidar_camera_multi_calib"
