@@ -54,3 +54,9 @@ CATKIN_IGNORE
 data/
 result/
 *extrinsic*.txt
+
+# Clang
+*clang*
+*cache*
+build
+compile_commands.json
